@@ -1,0 +1,13 @@
+$ XMAKE_ROOT=y xmake f --metax-gpu=y --use-mc=y -y && xmake && xmake install
+BUILD_EXIT=0
+INSTALL_EXIT=0
+
+$ ls src/infiniop/ops/*/metax | grep -c : 
+metax backends: 138
+
+$ python test/infiniop/dequantize_gptq.py --metax
+Testing Dequantize GPTQ on Metax with in_features:128, out_features:256, group_size:32
+Testing Dequantize GPTQ on Metax with in_features:512, out_features:2048, group_size:128
+Testing Dequantize GPTQ on Metax with in_features:1024, out_features:1024, group_size:128
+Testing Dequantize GPTQ on Metax with in_features:513, out_features:257, group_size:32
+Test passed!
