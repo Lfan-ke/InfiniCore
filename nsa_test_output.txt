@@ -1,0 +1,31 @@
+$ mx-smi | head
+
+Attached GPUs                                     : 1
++---------------------------------------------------------------------------------+
+| MX-SMI 2.2.12                      Kernel Mode Driver Version: 3.8.30           |
+| MACA Version: 3.5.3.20             BIOS Version: 1.33.5.0                       |
+|------------------+-----------------+---------------------+----------------------|
+| Board       Name | GPU   Persist-M | Bus-id              | GPU-Util      sGPU-M |
+| Pwr:Usage/Cap    | Temp       Perf | Memory-Usage        | GPU-State            |
+|==================+=================+=====================+======================|
+| 0     MetaX C500 | 0           Off | 0000:0f:00.0        | 4%           Enabled |
+
+$ python -c "import torch; p=torch.cuda.get_device_properties(0); print(p.name, p.warp_size)"
+MetaX C500 | warp_size = 64
+
+===== nsa_paged_attention --metax =====
+Testing NsaPagedAttention on Metax with num_seqs=2, num_heads=4, num_kv_heads=2, page_block_size=128, max_seq_len=192, nsa_block_size=64, window_size=64, select_blocks=2, dtype=BF16
+Testing NsaPagedAttention on Metax with num_seqs=2, num_heads=4, num_kv_heads=2, page_block_size=128, max_seq_len=192, nsa_block_size=64, window_size=64, select_blocks=2, dtype=F16
+Testing NsaPagedAttention on Metax with num_seqs=3, num_heads=8, num_kv_heads=2, page_block_size=128, max_seq_len=255, nsa_block_size=64, window_size=128, select_blocks=4, dtype=BF16
+Testing NsaPagedAttention on Metax with num_seqs=3, num_heads=8, num_kv_heads=2, page_block_size=128, max_seq_len=255, nsa_block_size=64, window_size=128, select_blocks=4, dtype=F16
+Test passed!
+NSA_ATTN_EXIT=0
+
+===== nsa_compress_paged_cache --metax =====
+Testing NsaCompressPagedCache on Metax with num_seqs=2, max_seq_len=192, num_kv_heads=2, page_block_size=128, nsa_block_size=64, update_last_only=False, dtype=BF16
+Testing NsaCompressPagedCache on Metax with num_seqs=2, max_seq_len=192, num_kv_heads=2, page_block_size=128, nsa_block_size=64, update_last_only=False, dtype=F16
+Testing NsaCompressPagedCache on Metax with num_seqs=3, max_seq_len=191, num_kv_heads=1, page_block_size=128, nsa_block_size=64, update_last_only=True, dtype=BF16
+Testing NsaCompressPagedCache on Metax with num_seqs=3, max_seq_len=191, num_kv_heads=1, page_block_size=128, nsa_block_size=64, update_last_only=True, dtype=F16
+Test passed!
+NSA_CACHE_EXIT=0
+DONE
